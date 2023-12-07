@@ -45,5 +45,4 @@ extension MainViewController: NetworkManagerDelegate, ShipViewDelegate{
         navigationController?.present(viewController, animated: true)
     }
     
-    // Git prueba
 }
