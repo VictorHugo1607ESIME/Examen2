@@ -48,7 +48,7 @@ class ShipCollectionViewCell: UICollectionViewCell {
     func initUI(ship: EstrellaDeLaMuerte){
         
         self.addSubview(arrowButton)
-        arrowButton.addAnchors(left: nil, top: nil, right: 5, bottom: 50)
+        arrowButton.addAnchorsAndCenter(centerX: false, centerY: true, width: 15, height: 15, left: nil, top: nil, right: 5, bottom: nil)
         
         let cellWidth = (width - 40) / 1
         self.addSubview(viewBorder)

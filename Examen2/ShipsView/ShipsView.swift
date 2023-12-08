@@ -15,15 +15,17 @@ class ShipsView: UIView {
     var title : UILabel = {
         var titulo = UILabel()
         titulo.textColor = .black
-        titulo.text = "Space X :cohete:"
+        titulo.text = "Space X 🚀"
         titulo.font = UIFont(name: "Arial Bold", size: 15)
+        titulo.textAlignment = .center
         return titulo
     }()
     var subtitle: UILabel = {
         var subtitulo = UILabel()
-        subtitulo.textColor = .black
+        subtitulo.textColor = SColors.textBlueDetail
         subtitulo.text = "Launches Past"
-        subtitulo.font = UIFont(name: "Arial bold", size: 25)
+        subtitulo.font = UIFont(name: "Arial Bold", size: 25)
+        subtitulo.textAlignment = .center
         return subtitulo
     }()
     var delegate : ShipViewDelegate?
@@ -46,17 +48,15 @@ class ShipsView: UIView {
         
         self.backgroundColor = SColors.backgroundDetail
         self.addSubview(title)
-        title.addAnchorsAndCenter(centerX: true, centerY: false, width: nil, height: nil, left: nil, top: 15, right: nil, bottom: nil)
-        
+        title.addAnchorsAndSize(width: nil, height: 15, left: 0, top: 10, right: 0, bottom: nil)
         self.addSubview(subtitle)
-        subtitle.addAnchors(left: 5, top: 25, right: nil, bottom: nil, withAnchor: .bottom, relativeToView: title)
-        
+        subtitle.addAnchorsAndSize(width: nil, height: 20, left: 5, top: 25, right: nil, bottom: nil,withAnchor: .top, relativeToView: title)
         shipCollection.dataSource = self
         shipCollection.delegate = self
         shipCollection.register(ShipCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         shipCollection.backgroundColor = .white
         self.addSubview(shipCollection)
-        shipCollection.addAnchorsAndCenter(centerX: true, centerY: false, width: nil, height: 40, left: 5, top: 50, right: 5, bottom: 60)
+        shipCollection.addAnchors(left: 5, top: 20, right: 5, bottom: 0, withAnchor: .top, relativeToView: subtitle)
         
     }
     
