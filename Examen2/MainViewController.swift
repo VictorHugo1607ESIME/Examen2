@@ -44,4 +44,6 @@ extension MainViewController: NetworkManagerDelegate, ShipViewDelegate{
         viewController.modalPresentationStyle = .fullScreen
         navigationController?.present(viewController, animated: true)
     }
+    
+    // Footer extension
 }
