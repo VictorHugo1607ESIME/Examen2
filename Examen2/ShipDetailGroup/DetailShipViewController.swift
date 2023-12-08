@@ -1,13 +1,5 @@
-//
-//  DetailShipViewController.swift
-//  Examen2
-//
-//  Created by Victor Hugo Martinez Ramirez on 30/11/23.
-//
 
 import UIKit
-import WebKit
-import youtube_ios_player_helper
 
 class DetailShipViewController: UIViewController{
     
@@ -118,15 +110,6 @@ class DetailShipViewController: UIViewController{
         
         return carousel
     }()
-    var viewWeb: WKWebView = {
-        var viewWeb = WKWebView()
-        
-        return viewWeb
-    }()
-    var videoView: YTPlayerView = {
-        var video = YTPlayerView()
-        return video
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,9 +189,7 @@ class DetailShipViewController: UIViewController{
         
         btnInfo.addTarget(self, action:#selector(goToInfo), for: .touchUpInside)
         btnLaunchInfo.addTarget(self, action:#selector(goToInfo), for: .touchUpInside)
-        
-        viewWeb.navigationDelegate = self
-        videoView.delegate = self
+              
         
     }
     
@@ -217,17 +198,15 @@ class DetailShipViewController: UIViewController{
     }
     
     @objc func goToInfo(){
-        view.addSubview(viewWeb)
-        viewWeb.addAnchors(left: 0, top: 60, right: 0, bottom: 0)
-        let url = URL(string: ship.links!.article_link!)!
-        let request = URLRequest(url: url)
-        viewWeb.load(request)
+        let viewController = ArticleViewController(linkArticle: ship.links!.article_link!)
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true)
     }
     
     @objc func goToVideo(){
-        view.addSubview(videoView)
-        videoView.addAnchors(left: 0, top: 60, right: 0, bottom: 0)
-        videoView.load(withVideoId: ship.links!.youtube_id!, playerVars: ["playsinline": 1, "origin": ship.links!.video_link!])
+        let viewController = VideoViewController(linkVideo: ship.links!.video_link!, idVideo: ship.links!.youtube_id!)
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true)
     }
     
     @objc func regresarPage(){
@@ -235,7 +214,7 @@ class DetailShipViewController: UIViewController{
     }
 }
 
-extension DetailShipViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, WKNavigationDelegate, YTPlayerViewDelegate{
+extension DetailShipViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(ship.links!.flickr_images!.count)
@@ -252,11 +231,4 @@ extension DetailShipViewController: UICollectionViewDataSource, UICollectionView
         return CGSize(width: width - 40, height: 120)
     }
     
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("Error view info::: \(error.localizedDescription)")
-    }
-    
-    func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
-        print("Error view video::: \(error)")
-    }
 }
