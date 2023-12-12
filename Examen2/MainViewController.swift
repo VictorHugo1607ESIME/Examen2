@@ -41,8 +41,9 @@ extension MainViewController: NetworkManagerDelegate, ShipViewDelegate{
     func shipSelected(ship: EstrellaDeLaMuerte) {
         print("ship selected")
         let viewController = DetailShipViewController(ship: ship)
-        viewController.modalPresentationStyle = .fullScreen
-        navigationController?.present(viewController, animated: true)
+       // navigationController?.present(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
+        
     }
     
 }

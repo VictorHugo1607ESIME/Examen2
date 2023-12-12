@@ -217,14 +217,16 @@ class DetailShipViewController: UIViewController{
     
     @objc func goToInfo(){
         let viewController = ArticleViewController(linkArticle: ship.links!.article_link!)
-        viewController.modalPresentationStyle = .fullScreen
-        self.present(viewController, animated: true)
+        //viewController.modalPresentationSty = .fullScreen
+       // self.present(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func goToVideo(){
         let viewController = VideoViewController(linkVideo: ship.links!.video_link!, idVideo: ship.links!.youtube_id!)
-        viewController.modalPresentationStyle = .fullScreen
-        self.present(viewController, animated: true)
+       // viewController.modalPresentationStyle = .fullScreen
+        //self.present(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func regresarPage(){
