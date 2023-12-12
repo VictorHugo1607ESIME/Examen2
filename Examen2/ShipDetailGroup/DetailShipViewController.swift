@@ -4,6 +4,7 @@ import UIKit
 class DetailShipViewController: UIViewController{
     
     var ship: EstrellaDeLaMuerte
+    var itemFocusMarker = 0
     
     var viewParent : UIView = {
         var viewParent = UIView()
@@ -107,8 +108,19 @@ class DetailShipViewController: UIViewController{
         layout.scrollDirection = .horizontal
         
         var carousel = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        carousel.showsHorizontalScrollIndicator = false
         
         return carousel
+    }()
+    var itemFocusCarousel: UICollectionView = {
+        var layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        
+        var itemFocusCarousel = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        itemFocusCarousel.showsHorizontalScrollIndicator = false
+        itemFocusCarousel.backgroundColor = .clear
+        
+        return itemFocusCarousel
     }()
     
     override func viewDidLoad() {
@@ -166,9 +178,15 @@ class DetailShipViewController: UIViewController{
         viewParent.addSubview(carousel)
         carousel.addAnchorsAndSize(width: nil, height: 120, left: 10, top: 30, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketTypeShip)
         
+        itemFocusCarousel.dataSource = self
+        itemFocusCarousel.delegate = self
+        itemFocusCarousel.register(ItemSelectedCollectionViewCell.self, forCellWithReuseIdentifier: "marker")
+        viewParent.addSubview(itemFocusCarousel)
+        itemFocusCarousel.addAnchorsAndSize(width: nil, height: 6, left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
+        
         descriptionShip.text = ship.details ?? ""
         viewParent.addSubview(descriptionShip)
-        descriptionShip.addAnchorsAndSize(width: nil, height: nil, left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
+        descriptionShip.addAnchorsAndSize(width: nil, height: nil, left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: itemFocusCarousel)
         
         if !ship.links!.youtube_id!.isEmpty {
             viewParent.addSubview(btnPlayVideo)
@@ -222,13 +240,42 @@ extension DetailShipViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath) as! ImageShipsCollectionViewCell
-        cell.initUI(image: ship.links!.flickr_images![indexPath.item])
-        return cell
+        if collectionView == carousel {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath) as! ImageShipsCollectionViewCell
+            cell.initUI(image: ship.links!.flickr_images![indexPath.item])
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "marker", for: indexPath) as! ItemSelectedCollectionViewCell
+            if itemFocusMarker == indexPath.item{
+                cell.initUI(itemVisible: true)
+            }else{
+                cell.initUI(itemVisible: false)
+            }
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: width - 40, height: 120)
+        if collectionView == carousel{
+            return CGSize(width: width - 40, height: 120)
+        }else{
+            return CGSize(width: 6, height: 6)
+        }
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == carousel {
+            // Obtiene el índice de la celda actualmente visible
+            let visibleRect = CGRect(origin: carousel.contentOffset, size: carousel.bounds.size)
+            let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+            
+            if let indexPath = carousel.indexPathForItem(at: visiblePoint) {
+                let focusedItem = indexPath.item
+                print("Elemento visible en el índice: \(focusedItem)")
+                // Realiza las acciones que necesites con el índice de la celda actualmente visible
+                itemFocusMarker =  focusedItem
+                itemFocusCarousel.reloadItems(at: [indexPath])
+            }
+        }
+    }
 }

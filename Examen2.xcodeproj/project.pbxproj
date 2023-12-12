@@ -19,6 +19,9 @@
 		F1287B3C2B183A5200B7A93A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1287B3B2B183A5200B7A93A /* MainViewController.swift */; };
 		F1287B3E2B183B3200B7A93A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1287B3D2B183B3200B7A93A /* NetworkManager.swift */; };
 		F1287B422B183B9600B7A93A /* EstrellaDeLaMuerte.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1287B412B183B9600B7A93A /* EstrellaDeLaMuerte.swift */; };
+		F191C94A2B27818F006D2E84 /* ItemSelectedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F191C9492B27818F006D2E84 /* ItemSelectedCollectionViewCell.swift */; };
+		F1A098622B2396080013750B /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A098612B2396080013750B /* VideoViewController.swift */; };
+		F1A098642B23961D0013750B /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A098632B23961D0013750B /* ArticleViewController.swift */; };
 		F1A33A722B194FFB005571A1 /* ShipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A33A712B194FFB005571A1 /* ShipsView.swift */; };
 		F1A33A742B195153005571A1 /* ShipCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A33A732B195153005571A1 /* ShipCollectionViewCell.swift */; };
 		F1A33A772B1966B1005571A1 /* DetailShipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A33A762B1966B1005571A1 /* DetailShipViewController.swift */; };
@@ -42,6 +45,9 @@
 		F1287B3B2B183A5200B7A93A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F1287B3D2B183B3200B7A93A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		F1287B412B183B9600B7A93A /* EstrellaDeLaMuerte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstrellaDeLaMuerte.swift; sourceTree = "<group>"; };
+		F191C9492B27818F006D2E84 /* ItemSelectedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectedCollectionViewCell.swift; sourceTree = "<group>"; };
+		F1A098612B2396080013750B /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		F1A098632B23961D0013750B /* ArticleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		F1A33A712B194FFB005571A1 /* ShipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipsView.swift; sourceTree = "<group>"; };
 		F1A33A732B195153005571A1 /* ShipCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipCollectionViewCell.swift; sourceTree = "<group>"; };
 		F1A33A762B1966B1005571A1 /* DetailShipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShipViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +96,8 @@
 		F1287B212B18392F00B7A93A /* Examen2 */ = {
 			isa = PBXGroup;
 			children = (
+				F1A098602B2395B80013750B /* Article */,
+				F1A0985F2B2395AD0013750B /* Video */,
 				F1A33A752B19667D005571A1 /* ShipDetailGroup */,
 				F1A33A702B194FC2005571A1 /* ShipsView */,
 				F1287B362B18394700B7A93A /* Utils */,
@@ -116,6 +124,22 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		F1A0985F2B2395AD0013750B /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				F1A098612B2396080013750B /* VideoViewController.swift */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		F1A098602B2395B80013750B /* Article */ = {
+			isa = PBXGroup;
+			children = (
+				F1A098632B23961D0013750B /* ArticleViewController.swift */,
+			);
+			path = Article;
+			sourceTree = "<group>";
+		};
 		F1A33A702B194FC2005571A1 /* ShipsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +154,7 @@
 			children = (
 				F1A33A762B1966B1005571A1 /* DetailShipViewController.swift */,
 				F1EA0EF92B20E89E004A57C3 /* ImageShipsCollectionViewCell.swift */,
+				F191C9492B27818F006D2E84 /* ItemSelectedCollectionViewCell.swift */,
 			);
 			path = ShipDetailGroup;
 			sourceTree = "<group>";
@@ -262,11 +287,14 @@
 				F1287B252B18392F00B7A93A /* SceneDelegate.swift in Sources */,
 				F1287B3E2B183B3200B7A93A /* NetworkManager.swift in Sources */,
 				F1A33A742B195153005571A1 /* ShipCollectionViewCell.swift in Sources */,
+				F1A098622B2396080013750B /* VideoViewController.swift in Sources */,
 				F1A33A722B194FFB005571A1 /* ShipsView.swift in Sources */,
 				F1287B3C2B183A5200B7A93A /* MainViewController.swift in Sources */,
 				F1A33A772B1966B1005571A1 /* DetailShipViewController.swift in Sources */,
+				F1A098642B23961D0013750B /* ArticleViewController.swift in Sources */,
 				F1287B3A2B18398A00B7A93A /* SplashScreenViewController.swift in Sources */,
 				F1287B382B18395600B7A93A /* Utils.swift in Sources */,
+				F191C94A2B27818F006D2E84 /* ItemSelectedCollectionViewCell.swift in Sources */,
 				F1EA0EFA2B20E89E004A57C3 /* ImageShipsCollectionViewCell.swift in Sources */,
 				F1287B422B183B9600B7A93A /* EstrellaDeLaMuerte.swift in Sources */,
 			);
