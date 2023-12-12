@@ -106,21 +106,19 @@ class DetailShipViewController: UIViewController{
     var carousel: UICollectionView = {
         var layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         
         var carousel = UICollectionView(frame: .zero, collectionViewLayout: layout)
         carousel.showsHorizontalScrollIndicator = false
+        carousel.layer.cornerRadius = 15
+        carousel.clipsToBounds = true
         
         return carousel
     }()
-    var itemFocusCarousel: UICollectionView = {
-        var layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        
-        var itemFocusCarousel = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        itemFocusCarousel.showsHorizontalScrollIndicator = false
-        itemFocusCarousel.backgroundColor = .clear
-        
-        return itemFocusCarousel
+    var markerImage: UIPageControl = {
+        var pageControl = UIPageControl()
+        return pageControl
     }()
     
     override func viewDidLoad() {
@@ -174,19 +172,21 @@ class DetailShipViewController: UIViewController{
         
         carousel.dataSource = self
         carousel.delegate = self
+        carousel.isPagingEnabled = true
         carousel.register(ImageShipsCollectionViewCell.self, forCellWithReuseIdentifier: "images")
         viewParent.addSubview(carousel)
-        carousel.addAnchorsAndSize(width: nil, height: 120, left: 10, top: 30, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketTypeShip)
+        carousel.addAnchorsAndSize(width: nil, height: ship.links!.flickr_images!.count > 0 ? 120 : 0, left: 10, top: ship.links!.flickr_images!.count > 0 ? 30 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketTypeShip)
         
-        itemFocusCarousel.dataSource = self
-        itemFocusCarousel.delegate = self
-        itemFocusCarousel.register(ItemSelectedCollectionViewCell.self, forCellWithReuseIdentifier: "marker")
-        viewParent.addSubview(itemFocusCarousel)
-        itemFocusCarousel.addAnchorsAndSize(width: nil, height: 6, left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
+        markerImage.numberOfPages = ship.links!.flickr_images!.count
+        markerImage.currentPageIndicatorTintColor = SColors.textBlueDetail
+        markerImage.pageIndicatorTintColor = .gray
+        markerImage.isUserInteractionEnabled = false
+        viewParent.addSubview(markerImage)
+        markerImage.addAnchorsAndSize(width: nil, height: ship.links!.flickr_images!.count > 0 ? 8 : 0, left: 10, top: ship.links!.flickr_images!.count > 0 ? 20 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
         
         descriptionShip.text = ship.details ?? ""
         viewParent.addSubview(descriptionShip)
-        descriptionShip.addAnchorsAndSize(width: nil, height: nil, left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: itemFocusCarousel)
+        descriptionShip.addAnchorsAndSize(width: nil, height: nil, left: 5, top: 10, right: 5, bottom: nil, withAnchor: .top, relativeToView: markerImage)
         
         if !ship.links!.youtube_id!.isEmpty {
             viewParent.addSubview(btnPlayVideo)
@@ -232,7 +232,7 @@ class DetailShipViewController: UIViewController{
     }
 }
 
-extension DetailShipViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+extension DetailShipViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(ship.links!.flickr_images!.count)
@@ -240,42 +240,17 @@ extension DetailShipViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == carousel {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath) as! ImageShipsCollectionViewCell
-            cell.initUI(image: ship.links!.flickr_images![indexPath.item])
-            return cell
-        }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "marker", for: indexPath) as! ItemSelectedCollectionViewCell
-            if itemFocusMarker == indexPath.item{
-                cell.initUI(itemVisible: true)
-            }else{
-                cell.initUI(itemVisible: false)
-            }
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath) as! ImageShipsCollectionViewCell
+        cell.initUI(image: ship.links!.flickr_images![indexPath.item])
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == carousel{
-            return CGSize(width: width - 40, height: 120)
-        }else{
-            return CGSize(width: 6, height: 6)
-        }
+        return CGSize(width: width - 60, height: 120)
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView == carousel {
-            // Obtiene el índice de la celda actualmente visible
-            let visibleRect = CGRect(origin: carousel.contentOffset, size: carousel.bounds.size)
-            let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-            
-            if let indexPath = carousel.indexPathForItem(at: visiblePoint) {
-                let focusedItem = indexPath.item
-                print("Elemento visible en el índice: \(focusedItem)")
-                // Realiza las acciones que necesites con el índice de la celda actualmente visible
-                itemFocusMarker =  focusedItem
-                itemFocusCarousel.reloadItems(at: [indexPath])
-            }
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
+        markerImage.currentPage = Int(pageIndex)
     }
 }

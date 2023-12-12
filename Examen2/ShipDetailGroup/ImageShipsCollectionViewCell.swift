@@ -24,7 +24,7 @@ class ImageShipsCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
         
         imageView.sd_setImage(with: URL(string: image))
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         self.addSubview(imageView)
         imageView.addAnchorsWithMargin(0)
     }
