@@ -230,7 +230,7 @@ class DetailShipViewController: UIViewController{
     }
     
     @objc func regresarPage(){
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 

@@ -51,7 +51,7 @@ class ArticleViewController: UIViewController {
     }
     
     @objc func regresarPage(){
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     required init?(coder: NSCoder) {
