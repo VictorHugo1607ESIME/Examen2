@@ -1,16 +1,3 @@
-//
-//  Utils.swift
-//  NewCollectionView
-//
-//  Created by Victor Hugo Martinez Ramirez on 16/11/23.
-//
-
-//
-//  Utils.swift
-//  Shein
-//
-//  Created by Angel Duarte on 26/10/23.
-//
 
 import UIKit
 

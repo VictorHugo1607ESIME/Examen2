@@ -12,6 +12,8 @@ protocol ShipViewDelegate{
 
 class ShipsView: UIView {
     
+    var viewModel = ShipViewModel()
+    
     var title : UILabel = {
         var titulo = UILabel()
         titulo.textColor = .black
