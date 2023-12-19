@@ -3,7 +3,8 @@ import UIKit
 
 class DetailShipViewController: UIViewController{
     
-    var ship: EstrellaDeLaMuerte
+    var viewModel: DetailShipViewModel!
+    var ship: EstrellaDeLaMuerte?
     var itemFocusMarker = 0
     
     var viewParent : UIView = {
@@ -121,15 +122,25 @@ class DetailShipViewController: UIViewController{
         return pageControl
     }()
     
+    init(){
+        self.ship = nil
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initData(){
+        self.ship = viewModel.ship
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        initData()
         initUI()
-    }
-    
-    init(ship: EstrellaDeLaMuerte){
-        self.ship = ship
-        super.init(nibName: nil, bundle: nil)
     }
     
     func initUI(){
@@ -141,7 +152,7 @@ class DetailShipViewController: UIViewController{
         viewParent.addSubview(backImage)
         backImage.addAnchorsAndSize(width: 20, height: 20, left: 10, top: 10, right: nil, bottom: nil)
         
-        missionName.text = ship.mission_name
+        missionName.text = ship!.mission_name
         viewParent.addSubview(missionName)
         missionName.addAnchors(left: 0, top: 10, right: 0, bottom: nil)
         
@@ -149,7 +160,7 @@ class DetailShipViewController: UIViewController{
         viewParent.addSubview(detailText)
         detailText.addAnchors(left: 10, top: 65, right: nil, bottom: nil)
         
-        let launchDate = Date(timeIntervalSince1970: Double(ship.launch_date_unix!))
+        let launchDate = Date(timeIntervalSince1970: Double(ship!.launch_date_unix!))
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, h:mm a"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -158,15 +169,15 @@ class DetailShipViewController: UIViewController{
         viewParent.addSubview(dateShip)
         dateShip.addAnchors(left: 10, top: 10, right: nil, bottom: nil, withAnchor: .top, relativeToView: detailText)
         
-        siteShip.text = "Site: \(ship.launch_site!.site_name_long!)"
+        siteShip.text = "Site: \(ship!.launch_site!.site_name_long!)"
         viewParent.addSubview(siteShip)
         siteShip.addAnchors(left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: dateShip)
         
-        rocketNameShip.text = "Rocket name: \(ship.rocket!.rocket_name!)"
+        rocketNameShip.text = "Rocket name: \(ship!.rocket!.rocket_name!)"
         viewParent.addSubview(rocketNameShip)
         rocketNameShip.addAnchors(left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: siteShip)
         
-        rocketTypeShip.text = "Rocket type: \(ship.rocket!.rocket_type!)"
+        rocketTypeShip.text = "Rocket type: \(ship!.rocket!.rocket_type!)"
         viewParent.addSubview(rocketTypeShip)
         rocketTypeShip.addAnchors(left: 10, top: 10, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketNameShip)
         
@@ -175,20 +186,20 @@ class DetailShipViewController: UIViewController{
         carousel.isPagingEnabled = true
         carousel.register(ImageShipsCollectionViewCell.self, forCellWithReuseIdentifier: "images")
         viewParent.addSubview(carousel)
-        carousel.addAnchorsAndSize(width: nil, height: ship.links!.flickr_images!.count > 0 ? 120 : 0, left: 10, top: ship.links!.flickr_images!.count > 0 ? 30 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketTypeShip)
+        carousel.addAnchorsAndSize(width: nil, height: ship!.links!.flickr_images!.count > 0 ? 120 : 0, left: 10, top: ship!.links!.flickr_images!.count > 0 ? 30 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: rocketTypeShip)
         
-        markerImage.numberOfPages = ship.links!.flickr_images!.count
+        markerImage.numberOfPages = ship!.links!.flickr_images!.count
         markerImage.currentPageIndicatorTintColor = SColors.textBlueDetail
         markerImage.pageIndicatorTintColor = .gray
         markerImage.isUserInteractionEnabled = false
         viewParent.addSubview(markerImage)
-        markerImage.addAnchorsAndSize(width: nil, height: ship.links!.flickr_images!.count > 0 ? 8 : 0, left: 10, top: ship.links!.flickr_images!.count > 0 ? 20 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
+        markerImage.addAnchorsAndSize(width: nil, height: ship!.links!.flickr_images!.count > 0 ? 8 : 0, left: 10, top: ship!.links!.flickr_images!.count > 0 ? 20 : 0, right: 10, bottom: nil, withAnchor: .top, relativeToView: carousel)
         
-        descriptionShip.text = ship.details ?? ""
+        descriptionShip.text = ship!.details ?? ""
         viewParent.addSubview(descriptionShip)
         descriptionShip.addAnchorsAndSize(width: nil, height: nil, left: 5, top: 10, right: 5, bottom: nil, withAnchor: .top, relativeToView: markerImage)
         
-        if !ship.links!.youtube_id!.isEmpty {
+        if !ship!.links!.youtube_id!.isEmpty {
             viewParent.addSubview(btnPlayVideo)
             btnPlayVideo.addAnchorsAndSize(width: 44, height: 44, left: 40, top: 15, right: nil, bottom: nil, withAnchor: .top, relativeToView: descriptionShip)
             
@@ -211,39 +222,35 @@ class DetailShipViewController: UIViewController{
         
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     @objc func goToInfo(){
-        let viewController = ArticleViewController(linkArticle: ship.links!.article_link!)
+        let viewController = ArticleViewController(linkArticle: ship!.links!.article_link!)
         //viewController.modalPresentationSty = .fullScreen
        // self.present(viewController, animated: true)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func goToVideo(){
-        let viewController = VideoViewController(linkVideo: ship.links!.video_link!, idVideo: ship.links!.youtube_id!)
+        let viewController = VideoViewController(linkVideo: ship!.links!.video_link!, idVideo: ship!.links!.youtube_id!)
        // viewController.modalPresentationStyle = .fullScreen
         //self.present(viewController, animated: true)
         navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func regresarPage(){
-        navigationController?.popViewController(animated: true)
+        viewModel.returnPage()
     }
 }
 
 extension DetailShipViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(ship.links!.flickr_images!.count)
-        return ship.links!.flickr_images!.count
+        print(ship!.links!.flickr_images!.count)
+        return ship!.links!.flickr_images!.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath) as! ImageShipsCollectionViewCell
-        cell.initUI(image: ship.links!.flickr_images![indexPath.item])
+        cell.initUI(image: ship!.links!.flickr_images![indexPath.item])
         return cell
     }
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, NetworkManagerDelegate {
     
     var viewModel: MainViewModel!
 
@@ -15,9 +15,10 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .white
-        let manager = NetworkManager()
-        manager.getListSpaceCraft()
-        manager.delegate = self
+        viewModel.delegate = self
+//        let manager = NetworkManager()
+//        manager.getListSpaceCraft()
+//        manager.delegate = self
     }
     
     func initUI(shipList: [EstrellaDeLaMuerte]){
@@ -30,7 +31,22 @@ class MainViewController: UIViewController {
 
 }
 
-extension MainViewController: NetworkManagerDelegate, ShipViewDelegate{
+extension MainViewController: /*NetworkManagerDelegate,*/ ShipViewDelegate{
+    
+    /*func responseSucess(response: [EstrellaDeLaMuerte]) {
+        initUI(shipList: response)
+    }
+    
+    func responseError(error: Error) {
+        print("Error::: \(error)")
+    }*/
+    
+    func shipSelected(ship: EstrellaDeLaMuerte) {
+        print("ship selected")
+        //let viewController = DetailShipViewController(ship: ship)
+        //navigationController?.pushViewController(viewController, animated: true)
+        viewModel.connectDetailShipCoordinator(ship: ship)
+    }
     
     func responseSucess(response: [EstrellaDeLaMuerte]) {
         initUI(shipList: response)
@@ -39,12 +55,4 @@ extension MainViewController: NetworkManagerDelegate, ShipViewDelegate{
     func responseError(error: Error) {
         print("Error::: \(error)")
     }
-    
-    func shipSelected(ship: EstrellaDeLaMuerte) {
-        print("ship selected")
-        let viewController = DetailShipViewController(ship: ship)
-        navigationController?.pushViewController(viewController, animated: true)
-        
-    }
-    
 }

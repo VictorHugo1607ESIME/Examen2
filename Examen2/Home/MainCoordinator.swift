@@ -23,7 +23,10 @@ class MainCoordinator:Coordinator{
         navigationController.setViewControllers([view], animated: true)
     }
     
-    func connectShipDetail(){
-        
+    func connectShipDetail(ship: EstrellaDeLaMuerte){
+        let detailShipCoordinator = DetailShipCoordinator(navigationController: navigationController)
+        detailShipCoordinator.ship = ship
+        childCoordinator.append(detailShipCoordinator)
+        detailShipCoordinator.startCoordinator()
     }
 }
