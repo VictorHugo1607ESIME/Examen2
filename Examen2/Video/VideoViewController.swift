@@ -6,6 +6,7 @@ class VideoViewController: UIViewController {
     
     var linkVideo: String?
     var idVideo: String?
+    var viewModel: VideoViewModel?
     
     var viewParent : UIView = {
         var viewParent = UIView()
@@ -27,13 +28,17 @@ class VideoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        loadData()
         initUI()
     }
     
-    init(linkVideo: String, idVideo: String){
-        self.linkVideo = linkVideo
-        self.idVideo = idVideo
+    init(){
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    func loadData(){
+        self.linkVideo = viewModel!.linkVideo!
+        self.idVideo = viewModel!.idVideo!
     }
 
     func initUI(){

@@ -4,6 +4,7 @@ import WebKit
 
 class ArticleViewController: UIViewController {
     
+    var viewModel: ArticleViewModel!
     var linkArticle: String?
     var viewParent : UIView = {
         var viewParent = UIView()
@@ -25,11 +26,16 @@ class ArticleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        loadData()
         initUI()
     }
     
-    init(linkArticle: String){
-        self.linkArticle = linkArticle
+    func loadData(){
+        self.linkArticle = viewModel.linkArticle
+    }
+    
+    init(){
+        self.linkArticle = nil
         super.init(nibName: nil, bundle: nil)
     }
 

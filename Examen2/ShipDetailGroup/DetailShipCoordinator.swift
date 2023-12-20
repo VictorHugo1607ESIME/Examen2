@@ -26,11 +26,22 @@ class DetailShipCoordinator: Coordinator{
         navigationController.pushViewController(view, animated: true)
     }
     
-    func startCoordinatorWithAttribute(ship: EstrellaDeLaMuerte) {
-        
-    }
-    
     func returnPage(){
         navigationController.popViewController(animated: true)
+    }
+    
+    func connectToArticle(linkArtile: String){
+        let articleCoordinator = ArticleCoordinator(navigationController: navigationController)
+        articleCoordinator.linkArticle = linkArtile
+        childCoordinator.append(articleCoordinator)
+        articleCoordinator.startCoordinator()
+    }
+    
+    func connectToVideo(linkVideo: String, idVideo: String){
+        let videoCoordinator = VideoCoordinator(navigationController: navigationController)
+        videoCoordinator.linkVideo = linkVideo
+        videoCoordinator.idVideo = idVideo
+        childCoordinator.append(videoCoordinator)
+        videoCoordinator.startCoordinator()
     }
 }
